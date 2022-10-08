@@ -1,0 +1,180 @@
+version: "3"
+services:
+  voj-redis:
+    image: redis:5.0.9-alpine
+    container_name: voj-redis
+    restart: always
+    volumes:
+      - ${VOJ_DATA_DIRECTORY}/data/redis/data:/data
+    networks:
+      voj-network:
+        ipv4_address: ${REDIS_HOST:-172.20.0.2}
+    ports:
+      - ${REDIS_PORT:-6379}:6379
+    command: redis-server --appendonly yes
+        
+  voj-mysql:
+    image: mysql:5.7
+    container_name: voj-mysql
+    restart: always
+    volumes:
+      - ./mysql/data:/var/lib/mysql
+      - ./mysql/log:/var/log/mysql
+      - ./mysql/conf:/etc/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD:-voj123456} # mysql数据库root账号的密码
+      - TZ=Asia/Shanghai
+    ports:
+      - ${MYSQL_PORT:-3306}:3306
+    networks:
+      voj-network:
+        ipv4_address: ${MYSQL_HOST:-172.20.0.3}
+      
+  voj-nacos:
+    image: nacos/nacos-server:1.4.2
+    container_name: voj-nacos
+    restart: always
+    depends_on: 
+      - voj-mysql
+    environment:
+      - JVM_XMX=384m
+      - JVM_XMS=384m
+      - JVM_XMN=192m
+      - MODE=standalone
+      - SPRING_DATASOURCE_PLATFORM=mysql
+      - MYSQL_SERVICE_HOST=${MYSQL_HOST:-172.20.0.3}
+      - MYSQL_SERVICE_PORT=3306
+      - MYSQL_SERVICE_USER=root
+      - MYSQL_SERVICE_PASSWORD=${MYSQL_ROOT_PASSWORD:-voj123456} # 与上面数据库密码一致
+      - MYSQL_SERVICE_DB_NAME=nacos_config
+      - NACOS_AUTH_ENABLE=true # 开启鉴权
+    ports:
+      - ${NACOS_PORT:-8848}:8848
+    healthcheck:
+      test: curl -f http://${NACOS_HOST:-172.20.0.4}:8848/nacos/index.html || exit 1
+      interval: 6s
+      timeout: 10s
+      retries: 10
+    networks:
+      voj-network:
+        ipv4_address: ${NACOS_HOST:-172.20.0.4}
+    
+  voj-backend:
+    image: registry.cn-shanghai.aliyuncs.com/simplefanc/voj_backend
+    container_name: voj-backend
+    restart: always
+    depends_on:
+      - voj-redis
+      - voj-mysql
+      - voj-nacos
+    volumes:
+      - ${VOJ_DATA_DIRECTORY}/file:/voj/file
+      - ${VOJ_DATA_DIRECTORY}/testcase:/voj/testcase
+      - ${VOJ_DATA_DIRECTORY}/log/backend:/voj/log/backend
+    environment:
+      - TZ=Asia/Shanghai
+      - JAVA_OPTS=-Xms192m -Xmx384m
+      - BACKEND_SERVER_PORT=${BACKEND_PORT:-6688}
+      - NACOS_URL=${NACOS_HOST:-172.20.0.4}:8848
+      - NACOS_USERNAME=${NACOS_USERNAME:-nacos} # 登录 http://ip:8848/nacos 分布式配置中心与注册中心的后台的账号
+      - NACOS_PASSWORD=${NACOS_PASSWORD:-nacos} # 密码
+      - JWT_TOKEN_SECRET=${JWT_TOKEN_SECRET:-default} # token加密秘钥 默认则生成32位随机密钥
+      - JWT_TOKEN_EXPIRE=${JWT_TOKEN_EXPIRE:-86400} # token过期时间默认为24小时 86400s
+      - JWT_TOKEN_FRESH_EXPIRE=${JWT_TOKEN_FRESH_EXPIRE:-43200} # token默认12小时可自动刷新
+      - JUDGE_TOKEN=${JUDGE_TOKEN:-default} # 调用判题服务器的token 默认则生成32位随机密钥
+      - MYSQL_HOST=${MYSQL_HOST:-172.20.0.3}
+      - MYSQL_PUBLIC_HOST=${MYSQL_PUBLIC_HOST:-172.20.0.3} # 如果判题服务是分布式，请提供当前mysql所在服务器的公网ip
+      - MYSQL_PORT=3306
+      - MYSQL_DATABASE_NAME=voj
+      - MYSQL_USERNAME=root
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD:-voj123456}
+      - EMAIL_SERVER_HOST=${EMAIL_SERVER_HOST:-smtp.qq.com} # 请使用邮件服务的域名或ip
+      - EMAIL_SERVER_PORT=${EMAIL_SERVER_PORT:-465} # 请使用邮件服务的端口号
+      - EMAIL_USERNAME=${EMAIL_USERNAME:-your_email_username} # 请使用对应邮箱账号
+      - EMAIL_PASSWORD=${EMAIL_PASSWORD:-your_email_password} # 请使用对应邮箱密码
+      - REDIS_HOST=${REDIS_HOST:-172.20.0.2}
+      - REDIS_PORT=6379
+      - OPEN_REMOTE_JUDGE=true # 是否开启对hdu和codeforces的虚拟判题
+    ports:
+      - ${BACKEND_PORT:-6688}:${BACKEND_PORT:-6688}
+    networks:
+      voj-network:
+        ipv4_address: ${BACKEND_HOST:-172.20.0.5}
+
+  voj-frontend:
+    image: registry.cn-shanghai.aliyuncs.com/simplefanc/voj_frontend
+    container_name: voj-frontend
+    restart: always
+    # 开启https，请提供证书
+    # https://help.aliyun.com/document_detail/98728.htm
+    volumes:
+#      - ./html/dist:/usr/share/nginx/html
+      - ./server.pem:/etc/nginx/conf.d/cert/server.pem
+      - ./server.key:/etc/nginx/conf.d/cert/server.key
+    environment:
+      - SERVER_NAME=localhost # 域名或localhost(本地)
+      - BACKEND_SERVER_HOST=${BACKEND_HOST:-172.20.0.5} # backend后端服务地址
+      - BACKEND_SERVER_PORT=${BACKEND_PORT:-6688} # backend后端服务端口号
+      - USE_HTTPS=false # 使用https请设置为true
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      voj-network:
+        ipv4_address: 172.20.0.6
+  
+  voj-judger:
+    image: registry.cn-shanghai.aliyuncs.com/simplefanc/voj_judger
+    container_name: voj-judger
+    restart: always
+    depends_on:
+      - voj-mysql
+      - voj-nacos
+    volumes:
+      - ${VOJ_DATA_DIRECTORY}/testcase:/judge/testcase
+      - ${VOJ_DATA_DIRECTORY}/judge/log:/judge/log
+      - ${VOJ_DATA_DIRECTORY}/judge/run:/judge/run
+      - ${VOJ_DATA_DIRECTORY}/judge/spj:/judge/spj
+      - ${VOJ_DATA_DIRECTORY}/judge/interactive:/judge/interactive
+    environment:
+      - TZ=Asia/Shanghai
+      - JAVA_OPTS=-Xms192m -Xmx384m # 修正JVM参数以便适应单机部署
+      - JUDGE_SERVER_IP=${JUDGE_SERVER_IP:-172.20.0.7}
+      - JUDGE_SERVER_PORT=${JUDGE_SERVER_PORT:-8088}
+      - JUDGE_SERVER_NAME=${JUDGE_SERVER_NAME:-judger-alone} # 判题服务的名字
+      - NACOS_URL=${NACOS_HOST:-172.20.0.4}:8848
+      - NACOS_USERNAME=${NACOS_USERNAME:-nacos}
+      - NACOS_PASSWORD=${NACOS_PASSWORD:-nacos}
+      - MAX_TASK_NUM=${MAX_TASK_NUM:--1} # -1表示最大可接收判题任务数为cpu核心数+1
+      - REMOTE_JUDGE_OPEN=${REMOTE_JUDGE_OPEN:-true} # 当前判题服务器是否开启远程虚拟判题功能
+      - REMOTE_JUDGE_MAX_TASK_NUM=${REMOTE_JUDGE_MAX_TASK_NUM:--1} # -1表示最大可接收远程判题任务数为cpu核心数*2+1
+      - PARALLEL_TASK=${PARALLEL_TASK:-default} # 默认沙盒并行判题程序数为cpu核心数
+    ports:
+      - ${JUDGE_SERVER_PORT:-8088}:${JUDGE_SERVER_PORT:-8088}
+      # - "0.0.0.0:5050:5050" # 一般不开放安全沙盒端口
+#    healthcheck:
+#      test: curl -f http://${JUDGE_SERVER_IP:-172.20.0.7}:${JUDGE_SERVER_PORT:-8088}/version || exit 1
+#      interval: 30s
+#      timeout: 10s
+#      retries: 3
+    privileged: true # 设置容器的权限为root
+    shm_size: 512mb
+    networks:
+      voj-network:
+        ipv4_address: 172.20.0.7
+    
+#  voj-autohealth:  # 监控不健康的容器进行重启
+#    restart: always
+#    container_name: voj-autohealth
+#    image: willfarrell/autoheal
+#    environment:
+#      - AUTOHEAL_CONTAINER_LABEL=all
+#    volumes:
+#      - /var/run/docker.sock:/var/run/docker.sock
+    
+networks:
+   voj-network:
+     driver: bridge
+     ipam:
+       config:
+         - subnet: ${SUBNET:-172.20.0.0/16}

@@ -1,0 +1,163 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" href="/favicon.ico"><link rel="stylesheet" href="https://cdn.bootcss.com/material-design-icons/3.0.1/iconfont/material-icons.css"><title>Virtual Online Judge</title><script>// IE 10 and earlier
+    if (window.navigator.userAgent.indexOf('MSIE ') > 0 &&
+      window.confirm('Your browser is not supported, click \'OK\' to update')) {
+      window.location = 'http://outdatedbrowser.com'
+    }</script><style>@-webkit-keyframes enter {
+      0% {
+        opacity: 0;
+        top: -10px;
+      }
+
+      5% {
+        opacity: 1;
+        top: 0px;
+      }
+
+      50.9% {
+        opacity: 1;
+        top: 0px;
+      }
+
+      55.9% {
+        opacity: 0;
+        top: 10px;
+      }
+    }
+
+    @keyframes enter {
+      0% {
+        opacity: 0;
+        top: -10px;
+      }
+
+      5% {
+        opacity: 1;
+        top: 0px;
+      }
+
+      50.9% {
+        opacity: 1;
+        top: 0px;
+      }
+
+      55.9% {
+        opacity: 0;
+        top: 10px;
+      }
+    }
+
+    @-moz-keyframes enter {
+      0% {
+        opacity: 0;
+        top: -10px;
+      }
+
+      5% {
+        opacity: 1;
+        top: 0px;
+      }
+
+      50.9% {
+        opacity: 1;
+        top: 0px;
+      }
+
+      55.9% {
+        opacity: 0;
+        top: 10px;
+      }
+    }
+
+    body {
+      background: #f8f8f9;
+    }
+
+    #app-loader {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      margin-left: -27.5px;
+      margin-top: -27.5px;
+    }
+
+    #app-loader .square {
+      background: #2d8cf0;
+      width: 15px;
+      height: 15px;
+      float: left;
+      top: -10px;
+      margin-right: 5px;
+      margin-top: 5px;
+      position: relative;
+      opacity: 0;
+      -webkit-animation: enter 6s infinite;
+      animation: enter 6s infinite;
+    }
+
+    #app-loader .enter {
+      top: 0px;
+      opacity: 1;
+    }
+
+    #app-loader .square:nth-child(1) {
+      -webkit-animation-delay: 1.8s;
+      -moz-animation-delay: 1.8s;
+      animation-delay: 1.8s;
+    }
+
+    #app-loader .square:nth-child(2) {
+      -webkit-animation-delay: 2.1s;
+      -moz-animation-delay: 2.1s;
+      animation-delay: 2.1s;
+    }
+
+    #app-loader .square:nth-child(3) {
+      -webkit-animation-delay: 2.4s;
+      -moz-animation-delay: 2.4s;
+      animation-delay: 2.4s;
+      background: #ff9900;
+    }
+
+    #app-loader .square:nth-child(4) {
+      -webkit-animation-delay: 0.9s;
+      -moz-animation-delay: 0.9s;
+      animation-delay: 0.9s;
+    }
+
+    #app-loader .square:nth-child(5) {
+      -webkit-animation-delay: 1.2s;
+      -moz-animation-delay: 1.2s;
+      animation-delay: 1.2s;
+    }
+
+    #app-loader .square:nth-child(6) {
+      -webkit-animation-delay: 1.5s;
+      -moz-animation-delay: 1.5s;
+      animation-delay: 1.5s;
+    }
+
+    #app-loader .square:nth-child(8) {
+      -webkit-animation-delay: 0.3s;
+      -moz-animation-delay: 0.3s;
+      animation-delay: 0.3s;
+    }
+
+    #app-loader .square:nth-child(9) {
+      -webkit-animation-delay: 0.6s;
+      -moz-animation-delay: 0.6s;
+      animation-delay: 0.6s;
+    }
+
+    #app-loader .clear {
+      clear: both;
+    }
+
+    #app-loader .last {
+      margin-right: 0;
+    }
+
+    #app-loader .loader-content {
+      color: #3498db;
+      font-size: 16px;
+      font-weight: 600;
+    }</style><link href="/assets/css/chunk-03f40bda.695f19ef.css" rel="prefetch"><link href="/assets/css/chunk-04a7f920.caf2593b.css" rel="prefetch"><link href="/assets/css/chunk-0e964e98.43686bb4.css" rel="prefetch"><link href="/assets/css/chunk-0f5a82dc.fa8f96cb.css" rel="prefetch"><link href="/assets/css/chunk-1d161d1a.27042173.css" rel="prefetch"><link href="/assets/css/chunk-253e7ea2.96f54ced.css" rel="prefetch"><link href="/assets/css/chunk-29c867e4.883e6887.css" rel="prefetch"><link href="/assets/css/chunk-3894f58e.c279087e.css" rel="prefetch"><link href="/assets/css/chunk-3b4f0cf8.db3d9e3a.css" rel="prefetch"><link href="/assets/css/chunk-422104b3.2888dee5.css" rel="prefetch"><link href="/assets/css/chunk-47fc986a.a482efb1.css" rel="prefetch"><link href="/assets/css/chunk-50644e75.4ab27bf4.css" rel="prefetch"><link href="/assets/css/chunk-515e6145.df6d78ba.css" rel="prefetch"><link href="/assets/css/chunk-54d001bc.811ceb68.css" rel="prefetch"><link href="/assets/css/chunk-58d688b0.9fc121e5.css" rel="prefetch"><link href="/assets/css/chunk-5ae097d8.ac1df872.css" rel="prefetch"><link href="/assets/css/chunk-5cdaf087.b4adaf9c.css" rel="prefetch"><link href="/assets/css/chunk-5cfd54f8.17381714.css" rel="prefetch"><link href="/assets/css/chunk-5d45d45a.c7b8108b.css" rel="prefetch"><link href="/assets/css/chunk-5e52c65e.e72a1223.css" rel="prefetch"><link href="/assets/css/chunk-6fb079a8.2702f5f5.css" rel="prefetch"><link href="/assets/css/chunk-76b49323.48fc1bc7.css" rel="prefetch"><link href="/assets/css/chunk-7b271887.85f31b69.css" rel="prefetch"><link href="/assets/css/chunk-aa6d3ae2.31782569.css" rel="prefetch"><link href="/assets/css/chunk-ae61e534.93ca8876.css" rel="prefetch"><link href="/assets/css/chunk-b67e99ce.3f134a9d.css" rel="prefetch"><link href="/assets/css/chunk-da01f4d0.66abe188.css" rel="prefetch"><link href="/assets/css/chunk-e1fb0e16.bf2c4e1b.css" rel="prefetch"><link href="/assets/js/chunk-03f40bda.b2f2c5c0.js" rel="prefetch"><link href="/assets/js/chunk-04a7f920.c6a72c3f.js" rel="prefetch"><link href="/assets/js/chunk-0e964e98.11028d4a.js" rel="prefetch"><link href="/assets/js/chunk-0f5a82dc.e7bfd907.js" rel="prefetch"><link href="/assets/js/chunk-1d161d1a.c632a6e9.js" rel="prefetch"><link href="/assets/js/chunk-253e7ea2.70e47f81.js" rel="prefetch"><link href="/assets/js/chunk-29c867e4.876a1f96.js" rel="prefetch"><link href="/assets/js/chunk-2d0afe0f.aeacd75c.js" rel="prefetch"><link href="/assets/js/chunk-2d0b250a.8908ee8a.js" rel="prefetch"><link href="/assets/js/chunk-3894f58e.80d1a7eb.js" rel="prefetch"><link href="/assets/js/chunk-3b4f0cf8.e8145394.js" rel="prefetch"><link href="/assets/js/chunk-422104b3.7ab83281.js" rel="prefetch"><link href="/assets/js/chunk-47fc986a.5d02247f.js" rel="prefetch"><link href="/assets/js/chunk-50644e75.a179fba8.js" rel="prefetch"><link href="/assets/js/chunk-515e6145.6ca93c7e.js" rel="prefetch"><link href="/assets/js/chunk-54d001bc.fa61009a.js" rel="prefetch"><link href="/assets/js/chunk-58d688b0.a18d29b7.js" rel="prefetch"><link href="/assets/js/chunk-5ae097d8.ab25d3b5.js" rel="prefetch"><link href="/assets/js/chunk-5cdaf087.e99e6a64.js" rel="prefetch"><link href="/assets/js/chunk-5cfd54f8.5bfc0ff3.js" rel="prefetch"><link href="/assets/js/chunk-5d45d45a.ebb395ca.js" rel="prefetch"><link href="/assets/js/chunk-5e52c65e.64e36b97.js" rel="prefetch"><link href="/assets/js/chunk-6fb079a8.e4440a99.js" rel="prefetch"><link href="/assets/js/chunk-76b49323.8270d74f.js" rel="prefetch"><link href="/assets/js/chunk-7b271887.1b51e855.js" rel="prefetch"><link href="/assets/js/chunk-aa6d3ae2.4e8831a6.js" rel="prefetch"><link href="/assets/js/chunk-ae61e534.4dc5e319.js" rel="prefetch"><link href="/assets/js/chunk-b67e99ce.7590f6a7.js" rel="prefetch"><link href="/assets/js/chunk-da01f4d0.541c5bec.js" rel="prefetch"><link href="/assets/js/chunk-e1fb0e16.69649805.js" rel="prefetch"><link href="/assets/css/app.a561a550.css" rel="preload" as="style"><link href="/assets/css/chunk-vendors.1e52822f.css" rel="preload" as="style"><link href="/assets/js/app.761bf70d.js" rel="preload" as="script"><link href="/assets/js/chunk-vendors.ecad9dac.js" rel="preload" as="script"><link href="/assets/css/chunk-vendors.1e52822f.css" rel="stylesheet"><link href="/assets/css/app.a561a550.css" rel="stylesheet"></head><body><noscript><strong>We're sorry but voj-vue doesn't work properly without JavaScript enabled. Please enable it to continue.</strong></noscript><div id="app"></div><div id="app-loader"><div class="square"></div><div class="square"></div><div class="square last"></div><div class="square clear"></div><div class="square"></div><div class="square last"></div><div class="square clear"></div><div class="square"></div><div class="square last"></div><div class="loader-content"><span>Loading...</span></div></div><script src="/assets/js/chunk-vendors.ecad9dac.js"></script><script src="/assets/js/app.761bf70d.js"></script></body></html>

@@ -1,0 +1,49 @@
+voj:
+  jwt:
+    # 加密秘钥
+    secret: voj-secret-init
+    # token有效时长，1天，单位秒
+    expire: 86400
+    checkRefreshExpire: 43200
+    header: token
+  judge:
+    # 调用判题服务器的token
+    token: voj-judge-token-init
+  db:
+    host: 127.0.0.1
+    public-host: 127.0.0.1
+    port: 3306
+    name: voj
+    username: root
+    password: voj123456
+  mail:
+    ssl: true
+    username: your_email_username
+    password: your_email_password
+    host: smtp.qq.com
+    port: 465
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    password:
+  web-config:
+    base-url: "https://voj.mobi"
+    name: "Virtual Online Judge"
+    short-name: "VOJ"
+    description: "Virtual Online Judge"
+    register: true
+    problem: true
+    training: true
+    contest: true
+    status: true
+    rank: true
+    discussion: true
+    introduction: true
+    code-visible-start-time: 1646663676000
+    footer:
+      record:
+        name: your_website_record_number
+        url: "https://beian.miit.gov.cn"
+      project:
+        name: "VOJ"
+        url: "https://github.com/simplefanC/voj"

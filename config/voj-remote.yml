@@ -1,0 +1,9 @@
+voj:
+  remote:
+    ojs:
+      - oj: POJ
+        accounts:
+          - username: id1
+            password: 123456
+          - username: id2
+            password: 123456

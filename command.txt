@@ -1,0 +1,41 @@
+﻿docker login --username=simplefanc@gmail.com registry.cn-shanghai.aliyuncs.com
+docker tag ed76a32aedd6 registry.cn-shanghai.aliyuncs.com/simplefanc/voj_backend:[镜像版本号]
+docker push registry.cn-shanghai.aliyuncs.com/simplefanc/voj_backend:[镜像版本号]
+
+docker build -t registry.cn-shanghai.aliyuncs.com/simplefanc/voj_judger /mydata/VojDeploy/voj-deploy/src/judger
+docker push registry.cn-shanghai.aliyuncs.com/simplefanc/voj_judger
+
+docker build -t registry.cn-shanghai.aliyuncs.com/simplefanc/voj_backend /mydata/VojDeploy/voj-deploy/src/backend
+docker push registry.cn-shanghai.aliyuncs.com/simplefanc/voj_backend
+
+docker build -t registry.cn-shanghai.aliyuncs.com/simplefanc/voj_frontend /mydata/VojDeploy/voj-deploy/src/frontend
+docker push registry.cn-shanghai.aliyuncs.com/simplefanc/voj_frontend
+
+docker build -t registry.cn-shanghai.aliyuncs.com/simplefanc/voj_rsync /mydata/VojDeploy/voj-deploy/src/rsync
+docker push registry.cn-shanghai.aliyuncs.com/simplefanc/voj_rsync
+
+docker logs voj-judger
+docker logs voj-backend
+
+sudo docker-compose -f /mydata/VojDeploy/docker-compose.yml down
+sudo docker-compose -f /mydata/VojDeploy/docker-compose.yml up -d
+
+show variables like '%event_scheduler%';
+重启即为off
+
+rm -rf /mydata/VojDeploy/html/dist/
+cd /mydata/VojDeploy && docker-compose stop voj-frontend && docker-compose rm -f voj-frontend && docker-compose up voj-frontend -d
+
+docker login --username=simplefanc@gmail.com registry.cn-shanghai.aliyuncs.com
+docker build -t registry.cn-shanghai.aliyuncs.com/simplefanc/voj_backend /mydata/voj-deploy/src/backend
+docker push registry.cn-shanghai.aliyuncs.com/simplefanc/voj_backend
+cd /mydata/VojDeploy && docker-compose stop voj-backend && docker-compose rm -f voj-backend && docker-compose up voj-backend -d
+docker images|grep none|awk '{print $3 }'|xargs docker rmi
+
+
+https://atcoder.jp
+https://www.hackerrank.com
+https://judge.yosupo.jp
+https://yukicoder.me
+https://github.com/hydro-dev/loj-download
+https://github.com/xunanmu/tedukuri-train
