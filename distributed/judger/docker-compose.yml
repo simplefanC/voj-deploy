@@ -10,10 +10,10 @@ services:
       - ${VOJ_JUDGESERVER_DATA_DIRECTORY}/run:/judge/run
       - ${VOJ_JUDGESERVER_DATA_DIRECTORY}/spj:/judge/spj
       - ${VOJ_JUDGESERVER_DATA_DIRECTORY}/interactive:/judge/interactive
-      - ${VOJ_JUDGESERVER_DATA_DIRECTORY}/voj-judger-1.0-SNAPSHOT.jar:/judge/app.jar
+      - ${VOJ_JUDGESERVER_DATA_DIRECTORY}/voj-judger-1.0.jar:/judge/app.jar
     environment:
       - TZ=Asia/Shanghai
-      - JAVA_OPTS=-Xmx1G -Xms1G -XX:MaxMetaspaceSize=256M -XX:MetaspaceSize=256M
+#      - JAVA_OPTS=-Xmx1G -Xms1G -XX:MaxMetaspaceSize=256M -XX:MetaspaceSize=256M
       - JUDGE_SERVER_IP=${JUDGE_SERVER_IP} # 服务器公网ip
       - JUDGE_SERVER_PORT=${JUDGE_SERVER_PORT:-8088}
       - JUDGE_SERVER_NAME=${JUDGE_SERVER_NAME} # 判题服务的名称，最好每个判题机不一样
