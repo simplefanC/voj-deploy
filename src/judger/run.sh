@@ -11,6 +11,7 @@ while :
             break
         else
             # 暂停1秒
+            echo -e "\033[91m nacos is unavailable \033[0m"
             sleep 1
         fi
     done
