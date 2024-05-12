@@ -71,7 +71,6 @@ services:
       - ${VOJ_DATA_DIRECTORY}/file:/voj/file
       - ${VOJ_DATA_DIRECTORY}/testcase:/voj/testcase
       - ${VOJ_DATA_DIRECTORY}/log:/voj/log
-      - ${VOJ_DATA_DIRECTORY}/voj-backend-1.0.jar:/voj/app.jar
     environment:
       - TZ=Asia/Shanghai
 #      - JAVA_OPTS=-Xmx1344M -Xms1344M -XX:MaxMetaspaceSize=256M -XX:MetaspaceSize=256M

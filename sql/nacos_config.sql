@@ -1,19 +1,3 @@
-/*
- * Copyright 1999-2018 Alibaba Group Holding Ltd.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 CREATE DATABASE `nacos_config` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 use `nacos_config`;
@@ -42,7 +26,7 @@ CREATE TABLE `config_info`
     `c_schema`     text,
     PRIMARY KEY (`id`),
     UNIQUE KEY `uk_configinfo_datagrouptenant` (`data_id`,`group_id`,`tenant_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='config_info';
+) COMMENT='config_info';
 
 /******************************************/
 /*   数据库全名 = nacos_config   */
@@ -60,7 +44,7 @@ CREATE TABLE `config_info_aggr`
     `tenant_id`    varchar(128) DEFAULT '' COMMENT '租户字段',
     PRIMARY KEY (`id`),
     UNIQUE KEY `uk_configinfoaggr_datagrouptenantdatum` (`data_id`,`group_id`,`tenant_id`,`datum_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='增加租户字段';
+) COMMENT='增加租户字段';
 
 
 /******************************************/
@@ -83,7 +67,7 @@ CREATE TABLE `config_info_beta`
     `tenant_id`    varchar(128)          DEFAULT '' COMMENT '租户字段',
     PRIMARY KEY (`id`),
     UNIQUE KEY `uk_configinfobeta_datagrouptenant` (`data_id`,`group_id`,`tenant_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='config_info_beta';
+) COMMENT='config_info_beta';
 
 /******************************************/
 /*   数据库全名 = nacos_config   */
@@ -105,7 +89,7 @@ CREATE TABLE `config_info_tag`
     `src_ip`       varchar(50)           DEFAULT NULL COMMENT 'source ip',
     PRIMARY KEY (`id`),
     UNIQUE KEY `uk_configinfotag_datagrouptenanttag` (`data_id`,`group_id`,`tenant_id`,`tag_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='config_info_tag';
+) COMMENT='config_info_tag';
 
 /******************************************/
 /*   数据库全名 = nacos_config   */
@@ -123,7 +107,7 @@ CREATE TABLE `config_tags_relation`
     PRIMARY KEY (`nid`),
     UNIQUE KEY `uk_configtagrelation_configidtag` (`id`,`tag_name`,`tag_type`),
     KEY         `idx_tenant_id` (`tenant_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='config_tag_relation';
+) COMMENT='config_tag_relation';
 
 /******************************************/
 /*   数据库全名 = nacos_config   */
@@ -143,7 +127,7 @@ CREATE TABLE `group_capacity`
     `gmt_modified`      datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间',
     PRIMARY KEY (`id`),
     UNIQUE KEY `uk_group_id` (`group_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='集群、各Group容量信息表';
+) COMMENT='集群、各Group容量信息表';
 
 /******************************************/
 /*   数据库全名 = nacos_config   */
@@ -168,7 +152,7 @@ CREATE TABLE `his_config_info`
     KEY            `idx_gmt_create` (`gmt_create`),
     KEY            `idx_gmt_modified` (`gmt_modified`),
     KEY            `idx_did` (`data_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='多租户改造';
+) COMMENT='多租户改造';
 
 
 /******************************************/
@@ -189,7 +173,7 @@ CREATE TABLE `tenant_capacity`
     `gmt_modified`      datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间',
     PRIMARY KEY (`id`),
     UNIQUE KEY `uk_tenant_id` (`tenant_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='租户容量信息表';
+) COMMENT='租户容量信息表';
 
 
 CREATE TABLE `tenant_info`
@@ -205,7 +189,7 @@ CREATE TABLE `tenant_info`
     PRIMARY KEY (`id`),
     UNIQUE KEY `uk_tenant_info_kptenantid` (`kp`,`tenant_id`),
     KEY             `idx_tenant_id` (`tenant_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='tenant_info';
+) COMMENT='tenant_info';
 
 CREATE TABLE `users`
 (
@@ -232,8 +216,8 @@ CREATE TABLE `permissions`
 -- ----------------------------
 -- Records of config_info
 -- ----------------------------
-INSERT INTO `config_info` VALUES (1, 'voj-prod.yml', 'DEFAULT_GROUP', 'voj:\n  jwt:\n    secret: voj-secret-init\n    expire: 86400\n    checkRefreshExpire: 43200\n    header: token\n  judge:\n    token: voj-judge-token-init\n  db:\n    host: 172.20.0.3\n    public-host: 172.20.0.3\n    port: 3306\n    name: voj\n    username: root\n    password: voj123456\n  mail:\n    ssl: true\n    username: your_email_username\n    password: your_email_password\n    host: smtp.qq.com\n    port: 465\n  redis:\n    host: 172.20.0.2\n    port: 6379\n    password:\n  web-config:\n    base-url: \"https://voj.mobi\"\n    name: \"Virtual Online Judge\"\n    short-name: \"VOJ\"\n    description: \"Virtual Online Judge\"\n    register: false\n    problem: true\n    training: true\n    contest: true\n    status: true\n    rank: true\n    discussion: true\n    introduction: true\n    code-visible-start-time: 1262275200000\n    footer:\n      record:\n        name: your_website_record_number\n        url: \"https://beian.miit.gov.cn\"\n      project:\n        name: \"VOJ\"\n        url: \"https://github.com/simplefanC/voj\"', '934c966de5b019c5d0d904fb72e4c82c', '2022-03-23 09:13:45', '2022-09-06 08:39:01', 'nacos', '192.168.198.1', '', '', '', '', '', 'yaml', '');
-INSERT INTO `config_info` VALUES (2, 'voj-remote.yml', 'DEFAULT_GROUP', 'voj:\n  remote:\n    ojs:\n      - oj: POJ\n        accounts:\n          - username: id1\n            password: 123456\n          - username: id2\n            password: 123456', '7285bcdb8e25073b47cb8793b120ae52', '2022-03-23 09:13:45', '2022-09-06 08:34:35', 'nacos', '192.168.198.1', '', '', '', '', '', 'yaml', '');
+INSERT INTO `config_info` (`id`, `data_id`, `group_id`, `content`, `md5`, `gmt_create`, `gmt_modified`, `src_user`, `src_ip`, `app_name`, `tenant_id`, `c_desc`, `c_use`, `effect`, `type`, `c_schema`) VALUES (1, 'voj-prod.yml', 'DEFAULT_GROUP', 'voj:\n  jwt:\n    # 加密秘钥\n    secret: 1f99dd5a85c846f79c6bcf608732adb7\n    # token有效时长，1天，单位秒\n    expire: 86400\n    checkRefreshExpire: 43200\n    header: token\n  judge:\n    # 调用判题服务器的token\n    token: 26665044413e400c90536eaa8b589ade\n  db:\n    host: 172.20.0.3\n    public-host: 172.20.0.3\n    port: 3306\n    name: voj\n    username: root\n    password: voj123456\n  mail:\n    ssl: true\n    username: your_email_username\n    password: your_email_password\n    host: smtp.qq.com\n    port: 465\n  redis:\n    host: 172.20.0.2\n    port: 6379\n    password: \n  switch:\n    problem: true\n    training: true\n    contest: true\n    status: true\n    rank: true\n    discussion: false\n    introduction: true\n    register: true\n    judge:\n      public: true\n      contest: true\n      submit-interval: 8\n      code-visible-start-time: 1377925200000\n  web-config:\n    base-url: \"https://voj.com\"\n    name: \"Virtual Online Judge\"\n    short-name: \"VOJ\"\n    description: \"Virtual Online Judge\"\n    footer:\n      record:\n        name: \"your_website_record_number\"\n        url: \"https://beian.miit.gov.cn\"\n      project:\n        name: \"VOJ\"\n        url: \"https://github.com/simplefanC/voj\"\n', '7f530ec8dbc7f82ecd8d9f98b4c06175', '2022-03-23 09:13:45', '2024-05-12 08:10:26', 'nacos', '172.20.0.5', '', '', NULL, NULL, NULL, 'yaml', NULL);
+INSERT INTO `config_info` (`id`, `data_id`, `group_id`, `content`, `md5`, `gmt_create`, `gmt_modified`, `src_user`, `src_ip`, `app_name`, `tenant_id`, `c_desc`, `c_use`, `effect`, `type`, `c_schema`) VALUES (2, 'voj-remote.yml', 'DEFAULT_GROUP', 'voj:\n  remote:\n    ojs:\n      - oj: POJ\n        accounts:\n          - username: id1\n            password: 123456\n          - username: id2\n            password: 123456', '7285bcdb8e25073b47cb8793b120ae52', '2022-03-23 09:13:45', '2022-09-06 08:34:35', 'nacos', '192.168.198.1', '', '', '', '', '', 'yaml', '');
 INSERT INTO `roles` VALUES ('nacos', 'ROLE_ADMIN');
 -- Bcrypt加密
 INSERT INTO `users` VALUES ('nacos', '$2a$10$czyBKhLCdK2RvJoYsmh5SumJ.F2VDoMuw5ogSnBGYwFtb1VY4qNau', 1);

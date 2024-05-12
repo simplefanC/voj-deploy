@@ -10,7 +10,6 @@ services:
       - ${VOJ_JUDGESERVER_DATA_DIRECTORY}/run:/judge/run
       - ${VOJ_JUDGESERVER_DATA_DIRECTORY}/spj:/judge/spj
       - ${VOJ_JUDGESERVER_DATA_DIRECTORY}/interactive:/judge/interactive
-      - ${VOJ_JUDGESERVER_DATA_DIRECTORY}/voj-judger-1.0.jar:/judge/app.jar
     environment:
       - TZ=Asia/Shanghai
 #      - JAVA_OPTS=-Xmx1G -Xms1G -XX:MaxMetaspaceSize=256M -XX:MetaspaceSize=256M
