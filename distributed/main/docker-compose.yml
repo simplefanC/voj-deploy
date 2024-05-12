@@ -107,10 +107,10 @@ services:
     restart: always
     # 开启https，请提供证书
     # https://help.aliyun.com/document_detail/98728.htm
-    volumes:
-      - ./html/dist:/usr/share/nginx/html
-      - ./server.pem:/etc/nginx/conf.d/cert/server.pem
-      - ./server.key:/etc/nginx/conf.d/cert/server.key
+#    volumes:
+#      - ./html/dist:/usr/share/nginx/html
+#      - ./server.pem:/etc/nginx/conf.d/cert/server.pem
+#      - ./server.key:/etc/nginx/conf.d/cert/server.key
     environment:
       - SERVER_NAME=localhost # 域名或localhost(本地)
       - BACKEND_SERVER_HOST=${BACKEND_HOST:-172.20.0.5} # backend后端服务地址
